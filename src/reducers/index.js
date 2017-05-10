@@ -3,11 +3,35 @@ import {
 } from '../actions'
 
 const initialState = {
-  loadedString: "",
-  ui: {
-    leftTab: 'inputOwl'
+  userInfo: {
+    accountNumber: "",
+    loggedIn: false,
+  },
+  accountInfo: {
+    payments: [],
+    // {
+    //   to:
+    //   time:
+    //   amount:
+    //   message:
+    //   category:
+    // }
+    payments: [],
+    // {
+    //   from:
+    //   time:
+    //   amount:
+    //   message:
+    //   category:
+    // }
+    accounts: [],
   },
   screen: 0
+  // 0 - overview
+  // 1 - pay
+  // 2 - request
+  // 3 - insigts
+  // 4 - transactions history
 }
 
 const reducer = (state = initialState, action) => {
@@ -18,6 +42,10 @@ const reducer = (state = initialState, action) => {
         ...state,
         screen: action.windowNum
       }
+    case ADD_ACCOUNTS:
+    case ADD_PAYMENTS:
+    case ADD_:
+    case SELECT_BANK:
     // case types.LOAD_OWL_STRING:
     //   return {...state, loadedString: action.owlString}
     // case types.SAVE_JSON_OWL:
