@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './css/organicfoodicons.css';
+//import './css/demo.css';
+import './css/component.css';
 
 class App extends Component {
   render() {
