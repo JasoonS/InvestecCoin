@@ -162,75 +162,14 @@ contract SimpleToken is StandardToken {
 
 }
 
-contract MintableToken is StandardToken, Ownable {
-  event Mint(address indexed to, uint value);
-  event MintFinished();
-
-  bool public mintingFinished = false;
-  uint public totalSupply = 0;
-
-  modifier canMint() {
-    if(mintingFinished) throw;
-    _;
-  }
-
-  function mint(address _to, uint _amount) onlyOwner canMint returns (bool) {
-    totalSupply = totalSupply.add(_amount);
-    balances[_to] = balances[_to].add(_amount);
-    Mint(_to, _amount);
-    return true;
-  }
-
-  function finishMinting() onlyOwner returns (bool) {
-    mintingFinished = true;
-    MintFinished();
-    return true;
-  }
-}
-
-/*
- * Ownable
- *
- * Base contract with an owner.
- * Provides onlyOwner modifier, which prevents function from running if it is called by anyone other than the owner.
- */
-contract Ownable {
-  address public owner;
-
-  function Ownable() {
-    owner = msg.sender;
-  }
-
-  modifier onlyOwner() {
-    if (msg.sender != owner) {
-      throw;
-    }
-    _;
-  }
-
-  function transferOwnership(address newOwner) onlyOwner {
-    if (newOwner != address(0)) {
-      owner = newOwner;
-    }
-  }
-}
-
-contract InvestecToken is MintableToken {
+contract InvestecCoin is SimpleToken {
   string public name = "InvestecCoin";
-  string public = "IC";
+  string public symbol = "IC";
   uint public decimals = 2;
   uint public INITIAL_SUPPLY = 0;
-
-  function InvestecToken() {
-    totalesupply = INITIAL_SUPPLY;
-    balance[msg.sender] = INITAL_SUPPLY;
-  }
-
-
- /*bytes32[] memory firstNames = new bytes32[](length);
+  /*bytes32[] memory firstNames = new bytes32[](length);
  bytes32[] memory lastNames = new bytes32[](length);
  uint[] memory ages = new uint[](length);*/
-
  /*struct Transaction {
    bytes32 message;
    uint amount;
@@ -238,9 +177,12 @@ contract InvestecToken is MintableToken {
    address to;
  }
  mapping (address => Transaction[]) transactionIn;
- mapping (address => Transaction[]) transactionOut;
-
- function sendMoney(bytes32 _message, address _to, uint _amount) returns (bool success) {
+ mapping (address => Transaction[]) transactionOut;  */
+ function InvestecCoin() {
+   totalSupply = INITIAL_SUPPLY;
+   balances[msg.sender] = INITIAL_SUPPLY;
+ }
+ /*function sendMoney(bytes32 _message, address _to, uint _amount) returns (bool success) {
    Transaction memory newPerson;    // have a boolean check here... only add transaction if enough funds...
    Transfer(msg.sender, _to, _amount);    newPerson.message = _message;
    newPerson.amount = _amount;
