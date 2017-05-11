@@ -10,14 +10,13 @@ class Analytics extends Component {
 
   componentDidMount(){
     window.makeGraphs();
-    
-}
-
+  }
   render() {
     return (
       <div>
         <div className="MainScreenDiv">
-        Analytics
+          Analytics
+        </div>
       </div>
     )
   }
