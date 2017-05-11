@@ -17,7 +17,7 @@ class Analytics extends Component {
     return (
       <div>
         <div className="MainScreenDiv">
-        </div>
+        Analytics
       </div>
     )
   }

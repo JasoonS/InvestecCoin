@@ -162,32 +162,6 @@ contract SimpleToken is StandardToken {
 
 }
 
-contract MintableToken is StandardToken, Ownable {
-  event Mint(address indexed to, uint value);
-  event MintFinished();
-
-  bool public mintingFinished = false;
-  uint public totalSupply = 0;
-
-  modifier canMint() {
-    if(mintingFinished) throw;
-    _;
-  }
-
-  function mint(address _to, uint _amount) onlyOwner canMint returns (bool) {
-    totalSupply = totalSupply.add(_amount);
-    balances[_to] = balances[_to].add(_amount);
-    Mint(_to, _amount);
-    return true;
-  }
-
-  function finishMinting() onlyOwner returns (bool) {
-    mintingFinished = true;
-    MintFinished();
-    return true;
-  }
-}
-
 /*
  * Ownable
  *
@@ -215,40 +189,127 @@ contract Ownable {
   }
 }
 
-contract InvestecToken is MintableToken {
+contract MintableToken is StandardToken, Ownable {
+  event Mint(address indexed to, uint value);
+  event MintFinished();
+
+  bool public mintingFinished = false;
+  uint public totalSupply = 0;
+
+  modifier canMint() {
+    if(mintingFinished) throw;
+    _;
+  }
+
+  function mint(address _to, uint _amount) onlyOwner canMint returns (bool) {
+    totalSupply = totalSupply.add(_amount);
+    balances[_to] = balances[_to].add(_amount);
+    Mint(_to, _amount);
+    return true;
+  }
+
+  function finishMinting() onlyOwner returns (bool) {
+    mintingFinished = true;
+    MintFinished();
+    return true;
+  }
+}
+
+contract InvestecCoin is MintableToken {
   string public name = "InvestecCoin";
-  string public = "IC";
+  string public symbol = "IC";
   uint public decimals = 2;
   uint public INITIAL_SUPPLY = 0;
 
-  function InvestecToken() {
-    totalesupply = INITIAL_SUPPLY;
-    balance[msg.sender] = INITAL_SUPPLY;
+  struct Transaction {
+     bytes32 message;
+     uint amount;
+     address from;
+     address to;
+   }
+   mapping (address => Transaction[]) transactionIn;
+   mapping (address => Transaction[]) transactionOut;
+   mapping (address => Transaction[]) paymentRequests;
+   uint paymentReqInd = 0;
+
+  function InvestecCoin() {
+    totalSupply = INITIAL_SUPPLY;
+    balances[msg.sender] = INITIAL_SUPPLY;
   }
 
+  // add check if coin amount is really less
+  function redeemCoins(uint amount) returns (bool) {
+    if (amount > balances[msg.sender]) {
+      return false;
+    } else {
+      balances[msg.sender] = balances[msg.sender] - amount;
+      return true;
+    }
+  }
+
+  function requestPayment(address _from, uint _amount, bytes32 _message) {
+    Transaction memory newPayReq;    // have a boolean check here... only add transaction if enough funds...
+    /*Transfer(msg.sender, msg.sender, _amount);*/
+    newPayReq.message = _message;
+    newPayReq.amount = _amount;
+    newPayReq.from = _from;
+    newPayReq.to = msg.sender;
+    paymentRequests[_from].push(newPayReq);
+    /*transactionIn[_to].push(newPayReq);
+    transactionIn[msg.sender].push(newPayReq);*/
+  }
+
+  function viewPayRequests() constant returns (bytes32[],address[],uint[]) {
+    uint length = paymentRequests[msg.sender].length - paymentReqInd;
+
+    bytes32[] memory messages = new bytes32[](length);
+    uint[] memory amounts = new uint[](length);
+    address[] memory addresses = new address[](length);
+
+    // This for loop isn't too expensive because this function is 'constart'
+    for (uint i = paymentReqInd; i < length; i++) {
+      Transaction memory nextReq;
+
+      nextReq = paymentRequests[msg.sender][i];
+
+      messages[i] = nextReq.message;
+      addresses[i] = nextReq.to;
+      amounts[i] = nextReq.amount;
+    }
+    return (messages, addresses, amounts);
+  }
+
+  function sendMoney(bytes32 _message, address _to, uint _amount) returns (bool success) {
+    Transaction memory trasac;
+
+    // have a boolean check here... only add transaction if enough funds...
+    Transfer(msg.sender, _to, _amount);
+
+    trasac.message = _message;
+    trasac.amount = _amount;
+    trasac.from = msg.sender;
+    trasac.to = _to;
+
+    transactionIn[_to].push(trasac);
+    transactionIn[msg.sender].push(trasac);
+    return true;
+  }
+
+  function makeReqPayment() {
+    sendMoney(paymentRequests[msg.sender][paymentReqInd].message,
+      paymentRequests[msg.sender][paymentReqInd].to,
+      paymentRequests[msg.sender][paymentReqInd].amount);
+
+    paymentReqInd = paymentReqInd + 1;
+  }
+
+  function getBallance() returns (uint balance){
+    return balances[msg.sender];
+  }
 
  /*bytes32[] memory firstNames = new bytes32[](length);
  bytes32[] memory lastNames = new bytes32[](length);
  uint[] memory ages = new uint[](length);*/
-
- /*struct Transaction {
-   bytes32 message;
-   uint amount;
-   address from;
-   address to;
- }
- mapping (address => Transaction[]) transactionIn;
- mapping (address => Transaction[]) transactionOut;
-
- function sendMoney(bytes32 _message, address _to, uint _amount) returns (bool success) {
-   Transaction memory newPerson;    // have a boolean check here... only add transaction if enough funds...
-   Transfer(msg.sender, _to, _amount);    newPerson.message = _message;
-   newPerson.amount = _amount;
-   newPerson.from = msg.sender;
-   newPerson.to = _to;    transactionIn[_to].push(newPerson);
-   transactionIn[msg.sender].push(newPerson);
-   return true;
- }*/
 
  /*function investInBank(bytes32 _message, address _to, uint _amount)*/
 }
