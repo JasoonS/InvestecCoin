@@ -108,13 +108,27 @@ class Transections extends Component {
       <div id="maincomponant">
 
       <div className={'form'}>
-      <h1>InvestecMinter</h1>
-      <h3>Mint Tokens:</h3>
+      <h1>Bank Mint APP</h1>
+      <h3>Mint New Coins:</h3>
         <input type="text" value={this.state.account} onChange={this.setInputAccount} placeholder="To : "/>
         <input value={this.state.amount} type="number" onChange={this.setInputAmount} placeholder="Amount : R"/>
         <input type="text" value={this.state.message} onChange={this.setInputMessage} placeholder="Message : "/>
         <button onClick={this.pay}>Pay</button>
+      </div>
+        <button className="makeNewPayment">Pay</button>
+        <button className="RequestPay">Request</button>
+      </div>
     )
+    // <div id="maincomponant">
+    //
+    // <div className={'form'}>
+    // <h1>InvestecMinter</h1>
+    // <h3>Mint Tokens:</h3>
+    // <input type="text" value={this.state.account} onChange={this.setInputAccount} placeholder="To : "/>
+    // <input value={this.state.amount} type="number" onChange={this.setInputAmount} placeholder="Amount : R"/>
+    // <input type="text" value={this.state.message} onChange={this.setInputMessage} placeholder="Message : "/>
+    // <button onClick={this.pay}>Pay</button>
+    // </div>
   }
 }
 

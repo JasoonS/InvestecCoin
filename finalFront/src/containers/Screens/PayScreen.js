@@ -46,7 +46,8 @@ class Transections extends Component {
       iCoin.deployed().then(function(iC) {
         ic = iC
         // 1
-        return ic.mint(self.state.account, self.state.amount, {from: accounts[0]})
+        console.log('SendMoney')
+        return ic.transfer(self.state.account, self.state.amount, {from: accounts[0]})
       })
       // .then((res) => {
       //   return ic.balanceOf(user)

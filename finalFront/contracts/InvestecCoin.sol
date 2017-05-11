@@ -285,13 +285,13 @@ contract InvestecCoin is MintableToken {
     // have a boolean check here... only add transaction if enough funds...
     Transfer(msg.sender, _to, _amount);
 
-    trasac.message = _message;
+    /*trasac.message = _message;
     trasac.amount = _amount;
     trasac.from = msg.sender;
     trasac.to = _to;
 
     transactionIn[_to].push(trasac);
-    transactionIn[msg.sender].push(trasac);
+    transactionIn[msg.sender].push(trasac);*/
     return true;
   }
 
