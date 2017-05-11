@@ -1,5 +1,41 @@
 <!doctype html>
 <html lang="en">
+  <style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 960px;
+  height: 500px;
+  position: relative;
+}
+svg{
+  width: 100%;
+  height: 100%;
+}
+path.slice{
+  stroke-width:2px;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+path { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: white;
+}
+
+
+polyline{
+  opacity: .3;
+  stroke: black;
+  stroke-width: 2px;
+  fill: none;
+}
+</style>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +52,7 @@
     <title>React App</title>
   </head>
   <body>
+
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -27,5 +64,284 @@
       To begin the development, run `npm start`.
       To create a production bundle, use `npm run build`.
     -->
+    <script>
+        window.makeGraphs=()=>{
+          var svg = d3.select(".MainScreenDiv")
+    .append("svg").attr("class","SVG").style("width",screen.width-100).style("height",screen.height-100)
+      .append("g");
+
+//createPie();
+createPie();
+createLine();
+function createLine(){
+var margin = {top: 30, right: 0, bottom: 30, left: 100},
+    width = 600 - margin.left - margin.right,
+    height = 270 - margin.top - margin.bottom;
+
+// Parse the date / time
+var parseDate = d3.time.format("%d-%b-%y").parse;
+// Set the ranges
+var x = d3.time.scale().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
+
+// Define the axes
+var xAxis = d3.svg.axis().scale(x)
+    .orient("bottom").ticks(5);
+
+var yAxis = d3.svg.axis().scale(y)
+    .orient("left").ticks(5);
+
+// Define the line
+var valueline = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
+    
+// Adds the svg canvas
+var svg = d3.select(".SVG")
+    .append("g")
+        .attr("transform", 
+              "translate(" + 500 + "," + 450 + ")");
+// Get the data
+d3.csv("linedata.csv", function(error, data) {
+    data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.close = +d.close;
+    });
+
+    // Scale the range of the data
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+    y.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+    // Add the valueline path.
+    svg.append("path")
+        .attr("class", "line")
+        .attr("d", valueline(data));
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+});
+}
+
+
+function createPie(){
+  console.log("pi created");
+var height = 400;
+var width = 1500;
+  var data = d3.csv("data.csv", function(d) {
+    val = [];
+    d.map((i)=>{
+      val.push(i);
+    })
+  svg.append("g")
+    .attr("class", "slices");
+  svg.append("g")
+    .attr("class", "labels");
+  svg.append("g")
+    .attr("class", "lines");
+
+
+  var radius = Math.min(width, height) / 2;
+
+  var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) {
+      return d.value;
+    });
+
+  var arc = d3.svg.arc()
+    .outerRadius(radius * 0.8)
+    .innerRadius(radius * 0.4);
+
+  var outerArc = d3.svg.arc()
+    .innerRadius(radius * 0.9)
+    .outerRadius(radius * 0.9);
+
+  svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  var key = function(d){ return d.data.label; };
+
+  var color = d3.scale.category20()
+    .domain(["Lorem ipsum", "dolor sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt"])
+    //.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+  randomData(val);
+
+  var total = 0;
+  for(var i = 0; i < val.length;i++){
+    console.log(val[i]);
+    total+=parseInt(val[i].money);
+  }
+  //val.map((i)=>{total+=i.value});
+
+  d3.select("g").attr('text-anchor', 'middle').append("text").text(total)
+                .style("fill","black")
+                .style("font-weight","bold");
+
+  function randomData (val){
+    var labels = val.map((i)=>{return {label: i.bank, value : i.money}});
+    return labels;
+  }
+  change(randomData(val));
+  function mergeWithFirstEqualZero(first, second){
+    var secondSet = d3.set(); second.forEach(function(d) { secondSet.add(d.label); });
+
+    var onlyFirst = first
+      .filter(function(d){ return !secondSet.has(d.label) })
+      .map(function(d) { return {label: d.label, value: 0}; });
+    return d3.merge([ second, onlyFirst ])
+      .sort(function(a,b) {
+        return d3.ascending(a.label, b.label);
+      });
+  }
+
+  function change(data) {
+    var duration = 1500;
+    svg.select(".slices").on("click",function(d){
+      console.log(d);
+    });
+    var data0 = svg.select(".slices").selectAll("path.slice")
+      .data().map(function(d) { return d.data });
+    if (data0.length == 0) data0 = data;
+    var was = mergeWithFirstEqualZero(data, data0);
+    var is = mergeWithFirstEqualZero(data0, data);
+
+    /* ------- SLICE ARCS -------*/
+
+    var slice = svg.select(".slices").selectAll("path.slice")
+      .data(pie(was), key);
+
+    slice.enter()
+      .insert("path")
+      .attr("class", "slice")
+      .style("fill", function(d) { return color(d.data.label); })
+      .each(function(d) {
+        this._current = d;
+      });
+
+    slice = svg.select(".slices").selectAll("path.slice")
+      .data(pie(is), key);
+
+    slice   
+      .transition().duration(duration)
+      .attrTween("d", function(d) {
+        var interpolate = d3.interpolate(this._current, d);
+        var _this = this;
+        return function(t) {
+          _this._current = interpolate(t);
+          return arc(_this._current);
+        };
+      });
+
+    slice = svg.select(".slices").selectAll("path.slice")
+      .data(pie(data), key);
+
+    slice
+      .exit().transition().delay(duration).duration(0)
+      .remove();
+
+    /* ------- TEXT LABELS -------*/
+
+    var text = svg.select(".labels").selectAll("text")
+      .data(pie(was), key);
+
+    text.enter()
+      .append("text")
+      .attr("dy", ".35em")
+      .style("opacity", 0)
+      .text(function(d) {
+        return d.data.label;
+      })
+      .each(function(d) {
+        this._current = d;
+      });
+    
+    function midAngle(d){
+      return d.startAngle + (d.endAngle - d.startAngle)/2;
+    }
+
+    text = svg.select(".labels").selectAll("text")
+      .data(pie(is), key);
+
+    text.transition().duration(duration)
+      .style("opacity", function(d) {
+        return d.data.value == 0 ? 0 : 1;
+      })
+      .attrTween("transform", function(d) {
+        var interpolate = d3.interpolate(this._current, d);
+        var _this = this;
+        return function(t) {
+          var d2 = interpolate(t);
+          _this._current = d2;
+          var pos = outerArc.centroid(d2);
+          pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+          return "translate("+ pos +")";
+        };
+      })
+      .styleTween("text-anchor", function(d){
+        var interpolate = d3.interpolate(this._current, d);
+        return function(t) {
+          var d2 = interpolate(t);
+          return midAngle(d2) < Math.PI ? "start":"end";
+        };
+      });
+    
+    text = svg.select(".labels").selectAll("text")
+      .data(pie(data), key);
+
+    text
+      .exit().transition().delay(duration)
+      .remove();
+
+    /* ------- SLICE TO TEXT POLYLINES -------*/
+
+    var polyline = svg.select(".lines").selectAll("polyline")
+      .data(pie(was), key);
+    
+    polyline.enter()
+      .append("polyline")
+      .style("opacity", 0)
+      .each(function(d) {
+        this._current = d;
+      });
+
+    polyline = svg.select(".lines").selectAll("polyline")
+      .data(pie(is), key);
+    
+    polyline.transition().duration(duration)
+      .style("opacity", function(d) {
+        return d.data.value == 0 ? 0 : .5;
+      })
+      .attrTween("points", function(d){
+        this._current = this._current;
+        var interpolate = d3.interpolate(this._current, d);
+        var _this = this;
+        return function(t) {
+          var d2 = interpolate(t);
+          _this._current = d2;
+          var pos = outerArc.centroid(d2);
+          pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+          return [arc.centroid(d2), outerArc.centroid(d2), pos];
+        };      
+      });
+    
+    polyline = svg.select(".lines").selectAll("polyline")
+      .data(pie(data), key);
+    
+    polyline
+      .exit().transition().delay(duration)
+      .remove();
+  };
+  });
+}
+        }
+    </script>
   </body>
 </html>
