@@ -1,15 +1,49 @@
-
-li{
+.makeNewPayment{
+  position: fixed;
+  right: 30px;
+  width: 200px;
+  top: 60px;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  background: #009688;
+  font: 15px sans-serif;
+  cursor: pointer;
+  color: #fff;
+}
+.RequestPay{
+  position: fixed;
+  right: 30px;
+  width: 200px;
+  top: 120px;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  background: #009688;
+  font: 15px sans-serif;
+  cursor: pointer;
+  color: #fff;
+}
+.main li{
   width: 650px;
   height: 100px;
   border-radius: 20px;
   margin: 5px 25%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(225,225,225,0.5);
   list-style: none;
 }
-h2{
+.main li img{
+  height: 80px;
+  margin: 0px 20px;
+  display: table;
+}
+.main li h4{
+  display: table;
+}
+.main h2{
   margin: 5px 25%;
 }
+
 bar rect {
   fill: steelblue;
 }
@@ -21,6 +55,32 @@ bar rect {
   fill: #fff;
   font: 10px sans-serif;
 }
+
+.listStuff ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.listStuff li {
+    float: left;
+    width: auto;
+    margin: auto;
+    line-height: 40px;
+    background: none;
+}
+
+.listStuff li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    line-height: 4.5em;
+    text-decoration: none;
+}
+
+
 
 *,
 *:after,
@@ -357,5 +417,5 @@ h1 {
 
 /* Styling of overlay */
 .bm-overlay {
-  background: rgba(0, 0, 0, 0.3);
+display: none;
 }

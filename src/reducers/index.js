@@ -42,10 +42,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         screen: action.windowNum
       }
-    case ADD_ACCOUNTS:
-    case ADD_PAYMENTS:
-    case ADD_:
-    case SELECT_BANK:
+    // case ADD_ACCOUNTS:
+    // case ADD_PAYMENTS:
+    // case ADD_:
+    // case SELECT_BANK:
+
     // case types.LOAD_OWL_STRING:
     //   return {...state, loadedString: action.owlString}
     // case types.SAVE_JSON_OWL:
