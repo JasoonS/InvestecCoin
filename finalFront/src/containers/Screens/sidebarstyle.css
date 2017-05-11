@@ -1,8 +1,8 @@
-form{
+.form{
   margin: 50px 400px;
   position: fixed;
 }
-form input{
+.form input{
     display: block;
     width: 500px;
     border: none;
@@ -12,7 +12,7 @@ form input{
     margin-top: 4px;
     color: #555;
 }
-form button{
+.form button{
   display: block;
   width: 500px;
   border: none;
@@ -23,7 +23,7 @@ form button{
   color: #555;
   cursor: pointer;
 }
-form h3{
+.form h3{
   margin: 0;
 }
 .modal {
@@ -112,7 +112,7 @@ form h3{
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  trans.form: translate(-50%, -50%);
 }
 .makeNewPayment{
   position: fixed;
@@ -252,7 +252,7 @@ h1 {
   padding: 1.35em 1.1em;
   width: 15em;
   background: #fffce1;
-  text-transform: uppercase;
+  text-trans.form: uppercase;
   letter-spacing: 1px;
   font-weight: 800;
   border-top-left-radius: 20px 50px;
@@ -354,7 +354,7 @@ h1 {
   opacity: 0.5;
 }
 .menu-3 span {
-  text-transform: uppercase;
+  text-trans.form: uppercase;
   letter-spacing: 1px;
   font-size: 0.75em;
 }
@@ -376,7 +376,7 @@ h1 {
 }
 .menu-4 a {
   padding: 1em;
-  text-transform: uppercase;
+  text-trans.form: uppercase;
   transition: background 0.3s, box-shadow 0.3s;
   box-shadow: inset 0 -1px rgba(0, 0, 0, 0.2);
 }
@@ -428,7 +428,7 @@ h1 {
   opacity: 0.5;
 }
 #elastic span {
-  text-transform: uppercase;
+  text-trans.form: uppercase;
   letter-spacing: 1px;
   font-size: 0.75em;
 }
@@ -465,7 +465,7 @@ h1 {
 #pushRotate a,
 #fallDown a {
   padding: 1em;
-  text-transform: uppercase;
+  text-trans.form: uppercase;
   transition: background 0.3s, box-shadow 0.3s;
   box-shadow: inset 0 -1px rgba(0, 0, 0, 0.2);
 }
