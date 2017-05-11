@@ -6,7 +6,7 @@ import { setScreen } from '../actions'
 import Picker from '../components/Picker'
 import Posts from '../components/Posts'
 
-import './sidebarstyle.css'
+import './analytics.css'
 
 
 class SideBar extends Component {
@@ -16,16 +16,9 @@ class SideBar extends Component {
 
   render() {
     return (
-      <div>
-        <Menu id="mymenu">
-          <a id="about" onClick={() => this.props.setScreen(0)} className="menu-item" >overview</a>
-          <a id="home" onClick={() => this.props.setScreen(1)} className="menu-item" >Pay</a>
-          <a id="contact" onClick={() => this.props.setScreen(2)} className="menu-item" >Request</a>
-          <a id="contact" onClick={() => this.props.setScreen(3)} className="menu-item" >Transactions History</a>
-          <a id="contact" onClick={() => this.props.setScreen(4)} className="menu-item" >Accounts</a>
-          <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
-        </Menu>
-      </div>
+      <div className="analytics">
+
+        </div>
     )
   }
 }

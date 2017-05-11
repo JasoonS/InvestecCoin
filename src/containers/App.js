@@ -7,6 +7,7 @@ import Posts from '../components/Posts'
 import MainWindow from './Screens/MainWindow.js'
 import PayScreen from './Screens/PayScreen.js'
 import Analytics from './Screens/Analytics.js'
+import Transections from './Screens/transectionsWindow.js'
 import SideBar from './SideBar.js'
 
 class App extends Component {
@@ -18,19 +19,20 @@ class App extends Component {
 
 
   render() {
-    console.log(this.props.screen)
+    console.log("This is the screen : "+this.props.screen)
     const displayMainWindow = () => {
       if (this.props.screen == 0)
-          return <MainWindow/>
+          return <Analytics/>
       else if(this.props.screen == 1)
           return <PayScreen/>
       else if(this.props.screen == 2)
-          return <Analytics/>
+          return <MainWindow  />
+      else if(this.props.screen == 3)
+          return <Transections />
     }
     return (
       <div>
         <SideBar/>
-        <MainWindow/>
         {displayMainWindow()}
       </div>
     )

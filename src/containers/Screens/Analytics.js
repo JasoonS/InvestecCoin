@@ -11,7 +11,7 @@ class Analytics extends Component {
   render() {
     return (
       <div>
-        PAY
+        Analytics
       </div>
     )
   }
